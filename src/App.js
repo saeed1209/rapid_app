@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
+import React,{ Component} from 'react';
+import FormFilter from './components/Form/FilterForm';
 import './App.css';
+import axios from "axios/index";
+import Base_Url from './config/BaseUrl';
+class App extends Component{
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    state = {
+        symbols:null
+    }
+
+    componentDidMount()
+    {
+        axios.get(Base_Url+'symbols')
+            .then(response=>{
+                this.setState(state=>({
+                    ...state,
+                    symbols:response.data})
+                )
+            });
+    }
+    render(){
+        return (
+            <div className="App">
+                <FormFilter symbols={this.state.symbols}/>
+            </div>
+        );
+    }
+
 }
 
 export default App;
